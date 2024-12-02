@@ -1,85 +1,109 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🌟 **Talki** - Where Developers and Gamers Connect
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+![Logo de Talki](https://drive.google.com/uc?id=1FE69RQj1PhDoFMsV3jJfJ3M-FMztxKtb)
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## 🎯 **Acerca de Talki**
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+**Talki** es una aplicación de mensajería y videollamadas, diseñada especialmente para **desarrolladores** y **gamers**. Nuestra misión es facilitar una comunicación clara, fluida y productiva para que puedas enfocarte en lo que realmente importa: tus proyectos y tus sesiones de juego.
 
-## Project setup
+---
 
-```bash
-$ npm install
-```
+## 🚀 **Características Principales**
 
-## Compile and run the project
+### 💬 **Mensajería Instantánea**
+Comunicación rápida y eficiente con tus amigos, colegas y equipos.
 
-```bash
-# development
-$ npm run start
+### 🎥 **Videollamadas de Alta Calidad**
+Conecta en tiempo real con videollamadas nítidas y estables, perfectas para revisiones de código o partidas en equipo.
 
-# watch mode
-$ npm run start:dev
+### 🛠️ **Integración con Herramientas de Desarrollo**
+- Conecta tus proyectos de GitHub, GitLab y otras plataformas.
+- Notificaciones automáticas de commits y pull requests.
 
-# production mode
-$ npm run start:prod
-```
+### 🎮 **Salas de Juego**
+- Crea salas privadas para organizar partidas.
+- Usa comandos de voz personalizados para coordinar estrategias.
 
-## Run tests
+### 🔒 **Seguridad y Privacidad**
+- Encriptación de extremo a extremo.
+- Configuración avanzada de permisos y roles en grupos.
 
-```bash
-# unit tests
-$ npm run test
+### 👀 **Compartir Pantalla**
+- Muestra en tiempo real tu progreso en desarrollo.
+- Ideal para streamers y presentaciones.
 
-# e2e tests
-$ npm run test:e2e
+---
 
-# test coverage
-$ npm run test:cov
-```
+## 📸 **Capturas de Pantalla**
 
-## Resources
+### 🌟 Pantalla de Inicio
+![Pantalla de inicio](ruta/a/la/captura-inicio.png)
 
-Check out a few resources that may come in handy when working with NestJS:
+### 💬 Interfaz de Chat
+![Chat](ruta/a/la/captura-chat.png)
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### 🎥 Videollamada en Acción
+![Videollamada](ruta/a/la/captura-videollamada.png)
 
-## Support
+---
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## 🛠️ **Guía de Instalación**
 
-## Stay in touch
+### **Requisitos**
+- **Sistemas Compatibles**: Windows, macOS, Linux, Android, iOS.
+- **Conexión a Internet**: Requerida para las funciones en línea.
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### **Pasos de Instalación**
+1. Descarga Talki desde nuestro [sitio web oficial](https://www.talkiapp.com/download).
+2. Instala la aplicación en tu dispositivo.
+3. Regístrate o inicia sesión con tu cuenta.
+4. ¡Listo! Ahora puedes empezar a comunicarte.
 
-## License
+---
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## 🧑‍💻 **¿Cómo Usar Talki?**
+
+1. **Crear un Grupo**: Organiza equipos según tus necesidades (desarrollo, gaming, etc.).
+2. **Enviar Mensajes**: Utiliza el chat para compartir ideas o coordinar tareas.
+3. **Iniciar Videollamadas**: Haz clic en el ícono de cámara para conectarte con tu equipo.
+4. **Configurar Integraciones**: Vincula tu cuenta con plataformas de desarrollo o juegos.
+
+---
+
+## 🤝 **Contribuye a Talki**
+
+¿Tienes ideas geniales para mejorar Talki? ¡Contribuir es fácil! 🎉
+
+1. **Forkea** este repositorio.
+2. Crea una rama para tus cambios:  
+   `git checkout -b feature/NuevaCaracteristica`
+3. Haz un commit con tus cambios:  
+   `git commit -m "Añadí una nueva característica"`
+4. Haz push a la rama:  
+   `git push origin feature/NuevaCaracteristica`
+5. Abre un **Pull Request** en GitHub.
+
+Para más detalles, consulta nuestro [CONTRIBUTING.md](CONTRIBUTING.md).
+
+---
+
+## 🌐 **Conéctate con Nosotros**
+
+- 📧 **Email**: contacto@talkiapp.com  
+- 🌍 **Sitio Web**: [www.talkiapp.com](https://www.talkiapp.com)  
+- 🐦 **Twitter**: [@TalkiApp](https://twitter.com/TalkiApp)  
+- 💬 **Discord**: [Únete a nuestra comunidad](https://discord.gg/talkiapp)
+
+---
+
+## 📄 **Licencia**
+
+Este proyecto está bajo la licencia **MIT**. Consulta el archivo [LICENSE](LICENSE) para más información.
+
+---
+
+## ⭐ **¿Te gusta Talki?**
+
+¡No olvides darle una estrella ⭐ a este repositorio y ayudarnos a crecer! 🚀
