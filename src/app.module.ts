@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { TalkiWsModule } from './talki-ws/talki-ws.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [TalkiWsModule],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
