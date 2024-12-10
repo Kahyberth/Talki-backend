@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { AccessToken, CreateOptions, RoomServiceClient } from 'livekit-server-sdk';
-import { ConfigService } from '@nestjs/config';  // Asegúrate de que ConfigService esté importado
+import { AccessToken, CreateOptions, RoomServiceClient, VideoGrant } from 'livekit-server-sdk';
+import { envs } from 'src/common/envs';
 
 @Injectable()
 export class LiveKitService {
   private client: RoomServiceClient;
 
-  constructor(private configService: ConfigService) {
-    const apiKey = this.configService.get<string>('LIVEKIT_API_KEY');
-    const apiSecret = this.configService.get<string>('LIVEKIT_API_SECRET');
-    const serverUrl = this.configService.get<string>('LIVEKIT_SERVER_URL');
+  constructor() {
+    const apiKey = envs.LIVEKIT_API_KEY;
+    const apiSecret = envs.LIVEKIT_API_SECRET;
+    const serverUrl = envs.LIVEKIT_SERVER_URL;
 
     this.client = new RoomServiceClient(serverUrl, apiKey, apiSecret);
   }
@@ -28,16 +28,19 @@ export class LiveKitService {
   }
 
   async generateAccessToken(roomName: string, userName: string): Promise<string> {
-    const apiKey = this.configService.get<string>('LIVEKIT_API_KEY');
-    const apiSecret = this.configService.get<string>('LIVEKIT_API_SECRET');
+    const apiKey = envs.LIVEKIT_API_KEY;
+    const apiSecret = envs.LIVEKIT_API_SECRET;
     
-    const token = new AccessToken(apiKey, apiSecret);
-    token.addGrant({
+    const token = new AccessToken(apiKey, apiSecret, { identity: userName });
+    
+    const videoGrant: VideoGrant = { 
       room: roomName,
+      roomJoin: true,
       canPublish: true,
       canSubscribe: true,
-    });
-    token.identity = userName;
+    };  
+    
+    token.addGrant(videoGrant);
 
     return await token.toJwt();
   }
