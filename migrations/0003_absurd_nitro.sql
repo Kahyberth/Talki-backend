@@ -1,0 +1,1 @@
+ALTER TABLE "servers" RENAME COLUMN "icon_url" TO "icon";

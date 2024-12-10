@@ -1,14 +1,17 @@
 import {
   WebSocketGateway,
-  SubscribeMessage,
-  MessageBody,
   OnGatewayConnection,
   OnGatewayDisconnect,
   WebSocketServer,
-  ConnectedSocket,
+  SubscribeMessage,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { envs } from 'src/common/envs';
+import { TalkiWsService } from './talki-ws.service';
+import axios from 'axios';
+import { db } from 'src/db/db';
+import { channels, serverMemberships, servers } from 'src/db/schema';
+import { eq } from 'drizzle-orm';
 
 @WebSocketGateway({
   cors: {
@@ -19,62 +22,134 @@ import { envs } from 'src/common/envs';
 export class TalkiWsGateway
   implements OnGatewayConnection, OnGatewayDisconnect
 {
+  constructor(private readonly talkiService: TalkiWsService) {}
+
   @WebSocketServer() wss: Server;
-
-  // Almacenar los participantes conectados
-  participants: Map<string, string> = new Map();
-
   handleConnection(client: Socket) {
     console.log('Client connected:', client.id);
-
-    // Por ahora, asignaremos un nombre genérico
-    const username = `User_${client.id.substring(0, 5)}`;
-    this.participants.set(client.id, username);
-
-    // Notificar a todos los clientes sobre el nuevo participante
-    this.wss.emit('participants', Array.from(this.participants.values()));
+    console.log('Client connected:', client.handshake.auth);
   }
 
-  handleDisconnect(client: Socket) {
-    console.log('Client disconnected:', client.id);
+  @SubscribeMessage('join')
+  async handleJoin(client: Socket, payload: { server: string }) {
+    if (!payload.server) return;
 
-    this.participants.delete(client.id);
+    const { id } = client.handshake.auth;
+    if (!id) return; // Asegurar que exista
 
-    this.wss.emit('participants', Array.from(this.participants.values()));
+    const user = await axios.get(`${envs.API_URL}/users/${id}`);
+    if (!user.data) return;
+
+    client.join(payload.server);
+    this.talkiService.onClientConnectToServer(
+      user.data[0].email,
+      user.data[0].name,
+      payload.server,
+    );
+
+    this.wss
+      .to(payload.server)
+      .emit('participants', this.talkiService.getParticipants(payload.server));
+    this.wss
+      .to(payload.server)
+      .emit(
+        'disconnectedParticipants',
+        this.talkiService.getDisconnectParticipants(payload.server),
+      );
   }
 
-  @SubscribeMessage('sendMessage')
-  handleMessage(
-    @MessageBody() payload: { message: string },
-    @ConnectedSocket() client: Socket,
+  @SubscribeMessage('leave')
+  async handleLeave(client: Socket, payload: { server: string }) {
+    if (!payload.server) return;
+
+    const { id } = client.handshake.auth;
+
+    if (!id) return;
+
+    const user = await axios.get(`${envs.API_URL}/users/${id}`);
+    if (!user.data) return;
+
+    const userEmail = user.data[0].email;
+
+    client.leave(payload.server);
+    this.talkiService.onClientLeaveServer(userEmail, payload.server);
+
+    this.wss
+      .to(payload.server)
+      .emit('participants', this.talkiService.getParticipants(payload.server));
+    this.wss
+      .to(payload.server)
+      .emit(
+        'disconnectedParticipants',
+        this.talkiService.getDisconnectParticipants(payload.server),
+      );
+  }
+
+  @SubscribeMessage('message')
+  async handleMessage(
+    client: Socket,
+    payload: { server: string; message: string },
   ) {
-    const username = this.participants.get(client.id) || 'Anónimo';
-    const time = new Date().toLocaleTimeString();
+    const { id } = client.handshake.auth;
+    if (!id || !payload.server || !payload.message.trim()) return;
 
-    const chatMessage = {
-      user: username,
-      time,
+    // Obtener el usuario desde la BD, en caso de ser necesario para el nombre
+    const user = await axios.get(`${envs.API_URL}/users/${id}`);
+    if (!user.data) return;
+    const response = await db
+      .select()
+      .from(servers)
+      .innerJoin(serverMemberships, eq(servers.id, serverMemberships.serverId))
+      .where(eq(serverMemberships.userId, user.data[0].id));
+
+    if (!response[0]) return;
+
+    const serverChannels = await db
+      .select()
+      .from(channels)
+      .where(eq(channels.serverId, response[0].server_memberships.serverId));
+
+    const status = await this.talkiService.saveMessage(
+      serverChannels[0].id,
+      user.data[0].id,
+      payload.message,
+    );
+
+    console.log(status);
+
+    // Emitir el mensaje a todos los clientes del servidor especificado
+    client.to(payload.server).emit('message', {
+      email: user.data[0].email,
+      username: user.data[0].name,
       message: payload.message,
-      avatarColor: this.getAvatarColor(username),
-    };
-
-    this.wss.emit('receiveMessage', chatMessage);
+      time: new Date().toLocaleTimeString(),
+    });
   }
 
-  getAvatarColor(username: string): string {
-    const colors = [
-      'bg-red-500',
-      'bg-green-500',
-      'bg-blue-500',
-      'bg-yellow-500',
-      'bg-purple-500',
-      'bg-pink-500',
-      'bg-indigo-500',
-      'bg-gray-500',
-    ];
-    const index =
-      username.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) %
-      colors.length;
-    return colors[index];
+  async handleDisconnect(client: Socket) {
+    const { id } = client.handshake.auth;
+
+    if (!id) return;
+
+    const user = await axios.get(`${envs.API_URL}/users/${id}`);
+    if (!user.data) return;
+
+    const userEmail = user.data[0].email;
+
+    if (!userEmail) return;
+
+    const servers = this.talkiService.getServersForClient(userEmail);
+    servers.forEach((server) => {
+      this.talkiService.onClientLeaveServer(userEmail, server);
+      this.wss
+        .to(server)
+        .emit('participants', this.talkiService.getParticipants(server));
+      this.wss
+        .to(server)
+        .emit(
+          'disconnectedParticipants',
+          this.talkiService.getDisconnectParticipants(server),
+        );
+    });
   }
 }

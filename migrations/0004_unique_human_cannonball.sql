@@ -1,0 +1,1 @@
+ALTER TABLE "servers" ALTER COLUMN "icon" SET NOT NULL;
