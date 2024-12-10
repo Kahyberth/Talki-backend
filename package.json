@@ -22,6 +22,7 @@
   "dependencies": {
     "@neondatabase/serverless": "^0.10.4",
     "@nestjs/common": "^10.0.0",
+    "@nestjs/config": "^3.3.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^10.0.0",
@@ -30,6 +31,7 @@
     "dotenv": "^16.4.6",
     "drizzle-orm": "^0.36.4",
     "joi": "^17.13.3",
+    "livekit-server-sdk": "^2.9.3",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
     "socket.io": "^4.8.1"
