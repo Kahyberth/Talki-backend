@@ -9,6 +9,7 @@ interface EnvVars {
   LIVEKIT_API_KEY: string;
   LIVEKIT_API_SECRET: string;
   LIVEKIT_SERVER_URL: string;
+  API_URL: string;
 }
 
 const envsSchema = joi
@@ -19,6 +20,7 @@ const envsSchema = joi
     LIVEKIT_API_KEY: joi.string().required(),
     LIVEKIT_API_SECRET: joi.string().required(),
     LIVEKIT_SERVER_URL: joi.string().required(),
+    API_URL: joi.string().required(),
   })
   .unknown(true);
 
@@ -29,6 +31,7 @@ const { error, value } = envsSchema.validate({
   LIVEKIT_API_KEY: process.env.LIVEKIT_API_KEY,
   LIVEKIT_API_SECRET: process.env.LIVEKIT_API_SECRET,
   LIVEKIT_SERVER_URL: process.env.LIVEKIT_SERVER_URL,
+  API_URL: process.env.API_URL,
 });
 
 if (error) {
@@ -44,4 +47,5 @@ export const envs = {
   LIVEKIT_API_KEY: envVars.LIVEKIT_API_KEY,
   LIVEKIT_API_SECRET: envVars.LIVEKIT_API_SECRET,
   LIVEKIT_SERVER_URL: envVars.LIVEKIT_SERVER_URL,
+  API_URL: envVars.API_URL,
 };

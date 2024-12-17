@@ -1,126 +1,106 @@
+import { relations } from 'drizzle-orm';
 import {
-    pgTable,
-    serial,
-    varchar,
-    text,
-    integer,
-    timestamp,
-  } from "drizzle-orm/pg-core";
-  import { relations } from "drizzle-orm";
-  
-  export const servers = pgTable("servers", {
-    id: serial("id").primaryKey(),
-    name: varchar("name", { length: 255 }).notNull(),
-    ownerId: integer("owner_id").notNull(),
-    iconUrl: varchar("icon_url", { length: 255 }),
-    createdAt: timestamp("created_at").defaultNow(),
-  });
-  
-  export const serversRelations = relations(servers, ({ many }) => ({
-    channels: many(channels),
-    roles: many(roles),
-    memberships: many(serverMemberships),
-  }));
-  
-  export const serverMemberships = pgTable("server_memberships", {
-    id: serial("id").primaryKey(),
-    userId: integer("user_id").notNull(),
-    serverId: integer("server_id")
+  pgTable,
+  serial,
+  varchar,
+  integer,
+  primaryKey,
+  text,
+  timestamp,
+  boolean,
+} from 'drizzle-orm/pg-core';
+
+export const chats = pgTable('chats', {
+  id: serial().primaryKey(),
+  message: text(),
+  created_by: varchar({ length: 50 }),
+  server: varchar({ length: 50 }),
+  createdAt: timestamp(),
+});
+
+export const server = pgTable('server', {
+  id: serial().primaryKey(),
+  name: varchar({ length: 50 }),
+  description: text(),
+  created_by: varchar({ length: 50 }),
+  createdAt: timestamp(),
+  updatedAt: timestamp(),
+  is_alive: boolean().default(true),
+});
+
+export const users = pgTable('users', {
+  id: serial().primaryKey(),
+  email: varchar({ length: 50 }),
+  name: varchar({ length: 50 }),
+  avatar: varchar({ length: 50 }),
+  external_user_id: varchar({ length: 50 }),
+});
+
+// Relations between tables
+
+export const server_relations_chats = relations(server, ({ many }) => ({
+  chats: many(chats),
+}));
+
+export const chats_relation_server = relations(chats, ({ one }) => ({
+  server: one(server, {
+    fields: [chats.server],
+    references: [server.id],
+  }),
+}));
+
+export const users_relation_chats = relations(users, ({ many }) => ({
+  chats: many(chats),
+}));
+
+export const chats_relation_users = relations(chats, ({ one }) => ({
+  user: one(users, {
+    fields: [chats.created_by],
+    references: [users.id],
+  }),
+}));
+
+export const users_relation_server = relations(users, ({ many }) => ({
+  server: many(server),
+}));
+
+export const server_relation_users = relations(server, ({ one }) => ({
+  users: one(users, {
+    fields: [server.created_by],
+    references: [users.id],
+  }),
+}));
+
+export const usersRelations = relations(users, ({ many }) => ({
+  server: many(server),
+}));
+
+export const serverRelations = relations(server, ({ many }) => ({
+  users: many(users),
+}));
+
+export const usersToServers = pgTable(
+  'users_to_servers',
+  {
+    userId: integer('user_id')
       .notNull()
-      .references(() => servers.id),
-    joinedAt: timestamp("joined_at").defaultNow(),
-  });
-  
-  export const serverMembershipsRelations = relations(
-    serverMemberships,
-    ({ one }) => ({
-      server: one(servers, {
-        fields: [serverMemberships.serverId],
-        references: [servers.id],
-      }),
-    })
-  );
-  
-  export const channels = pgTable("channels", {
-    id: serial("id").primaryKey(),
-    serverId: integer("server_id")
+      .references(() => users.id),
+    serverId: integer('server_id')
       .notNull()
-      .references(() => servers.id),
-    name: varchar("name", { length: 255 }).notNull(),
-    type: varchar("type", { length: 50 }).notNull(),
-    createdAt: timestamp("created_at").defaultNow(),
-  });
-  
-  export const channelsRelations = relations(channels, ({ one, many }) => ({
-    server: one(servers, {
-      fields: [channels.serverId],
-      references: [servers.id],
-    }),
-    messages: many(messages),
-  }));
-  
-  export const messages = pgTable("messages", {
-    id: serial("id").primaryKey(),
-    channelId: integer("channel_id")
-      .notNull()
-      .references(() => channels.id),
-    userId: integer("user_id").notNull(),
-    content: text("content").notNull(),
-    createdAt: timestamp("created_at").defaultNow(),
-  });
-  
-  export const messagesRelations = relations(messages, ({ one }) => ({
-    channel: one(channels, {
-      fields: [messages.channelId],
-      references: [channels.id],
-    }),
-  }));
-  
-  export const roles = pgTable("roles", {
-    id: serial("id").primaryKey(),
-    serverId: integer("server_id")
-      .notNull()
-      .references(() => servers.id),
-    name: varchar("name", { length: 255 }).notNull(),
-    color: varchar("color", { length: 7 }),
-  });
-  
-  export const userRoles = pgTable("user_roles", {
-    id: serial("id").primaryKey(),
-    userId: integer("user_id").notNull(),
-    roleId: integer("role_id")
-      .notNull()
-      .references(() => roles.id),
-  });
-  
-  export const rolesRelations = relations(roles, ({ one, many }) => ({
-    server: one(servers, {
-      fields: [roles.serverId],
-      references: [servers.id],
-    }),
-    userRoles: many(userRoles),
-    permissions: many(permissions),
-  }));
-  
-  export const userRolesRelations = relations(userRoles, ({ one }) => ({
-    role: one(roles, {
-      fields: [userRoles.roleId],
-      references: [roles.id],
-    }),
-  }));
-  
-  export const permissions = pgTable("permissions", {
-    id: serial("id").primaryKey(),
-    roleId: integer("role_id")
-      .notNull()
-      .references(() => roles.id),
-    permission: varchar("permission", { length: 255 }).notNull(),
-  });
-  
-  export const permissionsRelations = relations(permissions, ({ one }) => ({
-    role: one(roles, {
-      fields: [permissions.roleId],
-      references: [roles.id],
-    }),
-  }));
-  
+      .references(() => server.id),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.userId, t.serverId] }),
+  }),
+);
+
+export const usersToServersRelations = relations(usersToServers, ({ one }) => ({
+  server: one(server, {
+    fields: [usersToServers.serverId],
+    references: [server.id],
+  }),
+  user: one(users, {
+    fields: [usersToServers.userId],
+    references: [users.id],
+  }),
+}));
