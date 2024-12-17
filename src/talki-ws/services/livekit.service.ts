@@ -1,5 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { AccessToken, CreateOptions, RoomServiceClient, VideoGrant } from 'livekit-server-sdk';
+import {
+  AccessToken,
+  CreateOptions,
+  RoomServiceClient,
+  VideoGrant,
+} from 'livekit-server-sdk';
 import { envs } from 'src/common/envs';
 
 @Injectable()
@@ -27,19 +32,25 @@ export class LiveKitService {
     }
   }
 
-  async generateAccessToken(roomName: string, userName: string): Promise<string> {
+  async generateAccessToken(
+    roomName: string,
+    userName: string,
+  ): Promise<string> {
     const apiKey = envs.LIVEKIT_API_KEY;
     const apiSecret = envs.LIVEKIT_API_SECRET;
-    
-    const token = new AccessToken(apiKey, apiSecret, { identity: userName });
-    
-    const videoGrant: VideoGrant = { 
+
+    const token = new AccessToken(apiKey, apiSecret, {
+      identity: userName,
+      ttl: '10m',
+    });
+
+    const videoGrant: VideoGrant = {
       room: roomName,
       roomJoin: true,
       canPublish: true,
       canSubscribe: true,
-    };  
-    
+    };
+
     token.addGrant(videoGrant);
 
     return await token.toJwt();
