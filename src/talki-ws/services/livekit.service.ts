@@ -31,7 +31,7 @@ export class LiveKitService {
     const apiKey = envs.LIVEKIT_API_KEY;
     const apiSecret = envs.LIVEKIT_API_SECRET;
     
-    const token = new AccessToken(apiKey, apiSecret, { identity: userName });
+    const token = new AccessToken(apiKey, apiSecret, { identity: userName, ttl: '10m', });
     
     const videoGrant: VideoGrant = { 
       room: roomName,
