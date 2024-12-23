@@ -1,34 +1,34 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body } from '@nestjs/common';
 import { TalkiService } from './talki.service';
 import { CreateTalkiDto } from './dto/create-talki.dto';
-import { UpdateTalkiDto } from './dto/update-talki.dto';
+// import { UpdateTalkiDto } from './dto/update-talki.dto';
 
 @Controller('talki')
 export class TalkiController {
   constructor(private readonly talkiService: TalkiService) {}
 
-  @Post()
+  @Post('create-server')
   create(@Body() createTalkiDto: CreateTalkiDto) {
-    return this.talkiService.create(createTalkiDto);
+    return this.talkiService.createServer(createTalkiDto);
   }
 
-  @Get()
+  @Get('servers')
   findAll() {
     return this.talkiService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.talkiService.findOne(+id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.talkiService.findOne(+id);
+  // }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTalkiDto: UpdateTalkiDto) {
-    return this.talkiService.update(+id, updateTalkiDto);
-  }
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateTalkiDto: UpdateTalkiDto) {
+  //   return this.talkiService.update(+id, updateTalkiDto);
+  // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.talkiService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.talkiService.remove(+id);
+  // }
 }

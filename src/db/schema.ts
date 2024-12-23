@@ -12,6 +12,8 @@ export const chatsTable = sqliteTable('chats_table', {
 export const serverTable = sqliteTable('server_table', {
   id: text().primaryKey(),
   name: text().notNull().unique(),
+  icon: text().notNull(),
+  badge: text().notNull(),
   description: text().notNull(),
   created_by: text().notNull(),
   created_at: text().notNull(),

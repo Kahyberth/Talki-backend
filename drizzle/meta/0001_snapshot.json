@@ -1,8 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "908eeefd-65de-4a8b-8357-6a8b92e73985",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "230a9b87-7c2f-42f6-a446-bafb0954f7ae",
+  "prevId": "908eeefd-65de-4a8b-8357-6a8b92e73985",
   "tables": {
     "chats_table": {
       "name": "chats_table",
@@ -77,14 +77,14 @@
           "name": "icon",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "badge": {
           "name": "badge",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "description": {

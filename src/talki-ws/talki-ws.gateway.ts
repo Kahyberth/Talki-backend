@@ -66,6 +66,8 @@ export class TalkiWsGateway
           created_by: id,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
+          badge: 'new',
+          icon: '🕵️',
         });
         console.log('New server:', newServer);
         client.data.server = newServer[0].id;

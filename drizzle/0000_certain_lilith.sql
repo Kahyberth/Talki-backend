@@ -10,6 +10,8 @@ CREATE TABLE `chats_table` (
 CREATE TABLE `server_table` (
 	`id` text PRIMARY KEY NOT NULL,
 	`name` text NOT NULL,
+	`icon` text,
+	`badge` text,
 	`description` text NOT NULL,
 	`created_by` text NOT NULL,
 	`created_at` text NOT NULL,
