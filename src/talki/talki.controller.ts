@@ -17,6 +17,11 @@ export class TalkiController {
     return this.talkiService.findAll();
   }
 
+  @Get('ping')
+  ping() {
+    return 'pong';
+  }
+
   // @Get(':id')
   // findOne(@Param('id') id: string) {
   //   return this.talkiService.findOne(+id);
