@@ -12,7 +12,7 @@ import axios from 'axios';
 import db from 'src/db/db';
 import { chatsTable, serverTable } from 'src/db/schema';
 import { eq, sql } from 'drizzle-orm';
-import { nanoid } from 'nanoid';
+import { v4 as uuidv4 } from 'uuid';
 
 @WebSocketGateway({
   cors: {
@@ -60,7 +60,7 @@ export class TalkiWsGateway
         console.log('Client data:', client.data);
       } else {
         const newServer = await db.insert(serverTable).values({
-          id: nanoid(),
+          id: uuidv4(),
           name: payload.server,
           description: 'Server created by ' + user.data[0].name,
           created_by: id,

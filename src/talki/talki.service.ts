@@ -4,7 +4,7 @@ import { CreateTalkiDto } from './dto/create-talki.dto';
 import db from 'src/db/db';
 import { serverTable } from 'src/db/schema';
 import { eq } from 'drizzle-orm';
-import { nanoid } from 'nanoid';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class TalkiService {
@@ -24,7 +24,7 @@ export class TalkiService {
 
       // Crear el servidor
       await db.insert(serverTable).values({
-        id: nanoid(),
+        id: uuidv4(),
         name,
         created_by,
         description,
